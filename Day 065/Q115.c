@@ -1,58 +1,54 @@
 /*
-Q114: Write a program to take a string s as input. The task is to find the
-length of the longest substring without repeating characters.
-Print the length as output.
+Q115: Write a program to take two strings s and t as inputs (assume all
+characters are lowercase). The task is to determine if s and t are valid
+anagrams, meaning they contain the same characters with the same frequencies.
+Print "Anagram" if they are, otherwise "Not Anagram".
 
 Sample Test Cases:
 Input 1:
-s = "abcabcbb"
+s = "anagram", t = "nagaram"
 Output 1:
-3
+Anagram
 
 Input 2:
-s = "bbbbb"
+s = "rat", t = "car"
 Output 2:
-1
-
-Input 3:
-s = "pwwkew"
-Output 3:
-3
+Not Anagram
 */
 
 #include <stdio.h>
 #include <string.h>
 
 int main() {
-    char s[1000];
+    char s[1000], t[1000];
 
-    printf("Enter the string: ");
+    printf("Enter the first string: ");
     scanf("%999s", s);
 
-    int n = strlen(s);
+    printf("Enter the second string: ");
+    scanf("%999s", t);
 
-    /* lastSeen[c] = index just after the last occurrence of character c,
-       0 means "not seen yet" */
-    int lastSeen[256] = {0};
-
-    int maxLen = 0;
-    int start = 0;          /* left edge of the current window */
-
-    for (int i = 0; i < n; i++) {
-        unsigned char c = s[i];
-
-        /* if c already appeared inside the window, pull start past it */
-        if (lastSeen[c] > start)
-            start = lastSeen[c];
-
-        int len = i - start + 1;
-        if (len > maxLen)
-            maxLen = len;
-
-        lastSeen[c] = i + 1;
+    /* different lengths can never be anagrams */
+    if (strlen(s) != strlen(t)) {
+        printf("Not Anagram\n");
+        return 0;
     }
 
-    printf("Length of the longest substring without repeating characters: %d\n", maxLen);
+    int count[26] = {0};
 
+    /* add for s, subtract for t, in one pass */
+    for (int i = 0; s[i] != '\0'; i++) {
+        count[s[i] - 'a']++;
+        count[t[i] - 'a']--;
+    }
+
+    for (int i = 0; i < 26; i++) {
+        if (count[i] != 0) {
+            printf("Not Anagram\n");
+            return 0;
+        }
+    }
+
+    printf("Anagram\n");
     return 0;
 }
