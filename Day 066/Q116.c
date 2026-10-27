@@ -1,54 +1,53 @@
 /*
-Q115: Write a program to take two strings s and t as inputs (assume all
-characters are lowercase). The task is to determine if s and t are valid
-anagrams, meaning they contain the same characters with the same frequencies.
-Print "Anagram" if they are, otherwise "Not Anagram".
+Q116: Write a program to take an integer array nums which contains only
+positive integers, and an integer target as inputs. The goal is to find two
+distinct indices i and j in the array such that nums[i] + nums[j] equals the
+target. Assume exactly one solution exists and return the indices in any
+order. Print the two indices separated by a space as output. If no solution
+exists, print "-1 -1".
 
 Sample Test Cases:
 Input 1:
-s = "anagram", t = "nagaram"
+nums = [2,7,11,15], target = 9
 Output 1:
-Anagram
+0 1
 
 Input 2:
-s = "rat", t = "car"
+nums = [3,2,4], target = 6
 Output 2:
-Not Anagram
+1 2
+
+Input 3:
+nums = [3,3], target = 6
+Output 3:
+0 1
 */
 
 #include <stdio.h>
-#include <string.h>
 
 int main() {
-    char s[1000], t[1000];
+    int n, target;
 
-    printf("Enter the first string: ");
-    scanf("%999s", s);
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
 
-    printf("Enter the second string: ");
-    scanf("%999s", t);
+    int nums[n];
+    printf("Enter %d elements: ", n);
+    for (int i = 0; i < n; i++)
+        scanf("%d", &nums[i]);
 
-    /* different lengths can never be anagrams */
-    if (strlen(s) != strlen(t)) {
-        printf("Not Anagram\n");
-        return 0;
-    }
+    printf("Enter the target: ");
+    scanf("%d", &target);
 
-    int count[26] = {0};
-
-    /* add for s, subtract for t, in one pass */
-    for (int i = 0; s[i] != '\0'; i++) {
-        count[s[i] - 'a']++;
-        count[t[i] - 'a']--;
-    }
-
-    for (int i = 0; i < 26; i++) {
-        if (count[i] != 0) {
-            printf("Not Anagram\n");
-            return 0;
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (nums[i] + nums[j] == target) {
+                printf("%d %d\n", i, j);
+                return 0;
+            }
         }
     }
 
-    printf("Anagram\n");
+    printf("-1 -1\n");
     return 0;
 }
